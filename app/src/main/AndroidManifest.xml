@@ -17,8 +17,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".widget.ConfigWidgetActivity">
+            <intent-filter>
+                <action
+                    android:name="android.appwidget.action.APPWIDGET_CONFIGURE">
+                </action>
+            </intent-filter>
+        </activity>
         <receiver
-            android:name="Widget"
+            android:name=".widget.Widget"
             android:icon="@android:drawable/star_big_on"
             android:label="@string/current_rate_widget_name">
             <intent-filter>

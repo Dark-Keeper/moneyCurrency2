@@ -1,4 +1,4 @@
-package com.darkkeeper.moneycurrency;
+package com.darkkeeper.moneycurrency.widget;
 
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
@@ -9,6 +9,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RadioGroup;
 
+import com.darkkeeper.moneycurrency.CurrencySpinner;
+import com.darkkeeper.moneycurrency.R;
+import com.darkkeeper.moneycurrency.preferences.Prefs;
+
 /**
  * Created by user on 4/20/15.
  */
@@ -18,10 +22,6 @@ public class ConfigWidgetActivity extends Activity {
     Intent resultValue;
 
     final String LOG_TAG = "myLogs";
-
-    public final static String WIDGET_PREF = "widget_pref";
-    public final static String WIDGET_CURRENT_CURRENCY = "widget_current_currency";
-    public final static String WIDGET_NEXT_CURRENCY= "widget_next_currency";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,45 +48,22 @@ public class ConfigWidgetActivity extends Activity {
         setResult(RESULT_CANCELED, resultValue);
 
         setContentView(R.layout.widget_configs);
+
+        CurrencySpinner currentCurrencySpinner = (CurrencySpinner)findViewById(R.id.widgetSpinner1);
+        CurrencySpinner nextCurrencySpinner= (CurrencySpinner)findViewById(R.id.widgetSpinner2);
+
+        currentCurrencySpinner.setAdapter(this,0);
+        nextCurrencySpinner.setAdapter(this,1);
+
+        currentCurrencySpinner.setListener(0);
+        nextCurrencySpinner.setListener(1);
     }
 
 
     public void onClick(View v) {
-        int rgCurrent = ((RadioGroup) findViewById(R.id.rgCurrent))
-                .getCheckedRadioButtonId();
-        String current_currency = "";
-        switch (rgCurrent) {
-            case R.id.radioUsdCurrent:
-                current_currency = "USD";
-                break;
-            case R.id.radioRubCurrent:
-                current_currency = "RUB";
-                break;
-            case R.id.radioEuroCurrent:
-                current_currency = "EUR";
-                break;
-        }
-        int rgNext = ((RadioGroup) findViewById(R.id.rgNext))
-                .getCheckedRadioButtonId();
-        String next_currency = "";
-        switch (rgNext) {
-            case R.id.radioUsdNext:
-                next_currency = "USD";
-                break;
-            case R.id.radioRubNext:
-                next_currency = "RUB";
-                break;
-            case R.id.radioEuroNext:
-                next_currency = "EUR";
-                break;
-        }
 
         // Записываем значения с экрана в Preferences
-        SharedPreferences sp = getSharedPreferences(WIDGET_PREF, MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putString(WIDGET_CURRENT_CURRENCY + widgetID, current_currency);
-        editor.putString(WIDGET_NEXT_CURRENCY + widgetID, next_currency);
-        editor.commit();
+        Prefs.saveWidgetChanges();
 
         // положительный ответ
         setResult(RESULT_OK, resultValue);

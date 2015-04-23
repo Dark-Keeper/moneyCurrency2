@@ -3,67 +3,40 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_gravity="center">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <RadioGroup
-            android:id="@+id/rgCurrent"
-            android:layout_width="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center_vertical">
+        <LinearLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
-            <RadioButton
-                android:id="@+id/radioUsdCurrent"
-                android:layout_width="wrap_content"
+            android:orientation="horizontal">
+            <com.darkkeeper.moneycurrency.CurrencySpinner
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="@string/usd_name">
-            </RadioButton>
-            <RadioButton
-                android:id="@+id/radioRubCurrent"
-                android:layout_width="wrap_content"
+                android:id="@+id/widgetSpinner1"
+                android:spinnerMode="dropdown"
+                android:background="@android:drawable/btn_dropdown"
+                android:layout_weight="1"
+                />
+            <com.darkkeeper.moneycurrency.CurrencySpinner
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/rub_name">
-            </RadioButton>
-            <RadioButton
-                android:id="@+id/radioEuroCurrent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/euro_name">
-            </RadioButton>
-        </RadioGroup>
-        <RadioGroup
-            android:id="@+id/rgNext"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-            <RadioButton
-                android:id="@+id/radioUsdNext"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="@string/usd_name">
-            </RadioButton>
-            <RadioButton
-                android:id="@+id/radioRubNext"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/rub_name">
-            </RadioButton>
-            <RadioButton
-                android:id="@+id/radioEuroNext"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/euro_name">
-            </RadioButton>
-        </RadioGroup>
+                android:id="@+id/widgetSpinner2"
+                android:spinnerMode="dropdown"
+                android:background="@android:drawable/btn_dropdown"
+                android:layout_weight="1"
+                />
+
         </LinearLayout>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="onClick"
-        android:text="@string/ok"
-        android:layout_gravity="center">
-    </Button>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClick"
+            android:text="@string/ok"
+            android:layout_gravity="center">
+        </Button>
+    </LinearLayout>
 </LinearLayout>
