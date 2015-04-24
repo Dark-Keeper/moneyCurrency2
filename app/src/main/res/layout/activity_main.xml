@@ -6,46 +6,82 @@
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:id="@+id/linearLayout">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/currentRateTextView"
-                android:text="l"
-                android:textSize="40dp"
-                android:layout_gravity="center"
-                />
-
-            <LinearLayout
                 android:layout_width="fill_parent"
-                android:layout_height="300dp"
-                android:orientation="horizontal">
-                <com.darkkeeper.moneycurrency.CurrencyListView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/listView1"
-                    android:spinnerMode="dropdown"
-                    android:layout_weight="1"
-                    />
-                <com.darkkeeper.moneycurrency.CurrencyListView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/listView2"
-                    android:spinnerMode="dropdown"
-                    android:layout_weight="1"
-                    />
+                android:layout_height="40dp"
+                android:id="@+id/currencyFromName"
+                android:text="EUR"
+                android:textSize="30dp"
+                android:layout_weight="1"/>
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:id="@+id/currencyFromImage"
+                android:layout_weight="1"/>
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/abc_ic_ab_back_mtrl_am_alpha"
+                android:layout_weight="1"/>
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:id="@+id/currencyToImage"
+                android:layout_weight="1"/>
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:id="@+id/currencyToName"
+                android:text="USD"
+                android:textSize="30dp"
+                android:layout_weight="1"/>
             </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:orientation="horizontal"
+            android:layout_gravity="center">
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:id="@+id/currencyFromValue"
+                android:layout_marginRight="20dp"/>
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:id="@+id/currencyToValue"
+                android:layout_marginLeft="20dp"/>
+
+            </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:layout_gravity="center">
+            <Button
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:id="@+id/convert"
+                android:text="Show"/>
+            <Button
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:id="@+id/favorites"
+                android:text="Favorites"/>
+            </LinearLayout>
+        <WebView
+            android:layout_width="match_parent"
+            android:layout_height="300dp">
+
+            </WebView>
+
+
     </LinearLayout>
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Show"
-        android:id="@+id/button"
-        android:onClick="onClick"
-        android:layout_gravity="center"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
 </RelativeLayout>

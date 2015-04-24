@@ -29,7 +29,6 @@ import java.io.IOException;
 
 public class MainActivity extends ActionBarActivity{
     private static final String LOGS = "myLogs";
-    ;
 
     private final String[] items = new String[]{"USD","RUB","EUR","BYR"};
 
