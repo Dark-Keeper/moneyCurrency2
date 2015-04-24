@@ -9,54 +9,43 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:id="@+id/linearLayout">
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <com.darkkeeper.moneycurrency.CurrencySpinner
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/spinner1"
-                android:spinnerMode="dropdown"
-                android:background="@android:drawable/btn_dropdown"
-                android:layout_weight="1"
-                />
-        <com.darkkeeper.moneycurrency.CurrencySpinner
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/spinner2"
-            android:spinnerMode="dropdown"
-            android:background="@android:drawable/btn_dropdown"
-            android:layout_weight="1"
-            />
-        </LinearLayout>
-    </LinearLayout>
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            >
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/currentRateImageView"
-                />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/currentRateTextView"
-                android:text=""
-                android:textSize="20dp"
+                android:text="l"
+                android:textSize="40dp"
                 android:layout_gravity="center"
                 />
 
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="300dp"
+                android:orientation="horizontal">
+                <com.darkkeeper.moneycurrency.CurrencyListView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/listView1"
+                    android:spinnerMode="dropdown"
+                    android:layout_weight="1"
+                    />
+                <com.darkkeeper.moneycurrency.CurrencyListView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/listView2"
+                    android:spinnerMode="dropdown"
+                    android:layout_weight="1"
+                    />
             </LinearLayout>
-    </RelativeLayout>
-
-
+    </LinearLayout>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Show"
+        android:id="@+id/button"
+        android:onClick="onClick"
+        android:layout_gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>

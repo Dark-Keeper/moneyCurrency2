@@ -2,11 +2,18 @@ package com.darkkeeper.moneycurrency.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+
+import com.darkkeeper.moneycurrency.database.DBHelper;
 
 /**
  * Created by user on 4/23/15.
  */
 public class Prefs {
+
+    private static DBHelper dbHelper;
+
     private static SharedPreferences sp;
     private static SharedPreferences widgetSp;
     public static String currentCurrency;
@@ -15,6 +22,7 @@ public class Prefs {
     public static String widgetNextCurrency;
 
 
+    public static final String WIDGET_ID = "widget_id_";
     private static final String ACTIVITY_PREF = "activity_pref";
     private static final String CURRENT_CURRENCY = "current_currency";
     private static final String NEXT_CURRENCY = "next_currency";
@@ -28,34 +36,35 @@ public class Prefs {
         SharedPreferences.Editor editor = sp.edit();
         editor.putString(CURRENT_CURRENCY, currentCurrency);
         editor.putString(NEXT_CURRENCY, nextCurrency);
+        editor.putString(WIDGET_CURRENT_CURRENCY, widgetCurrentCurrency);
+        editor.putString(WIDGET_NEXT_CURRENCY, widgetNextCurrency);
         editor.commit();
     }
 
     public static void loadPrefs(Context context){
         sp = context.getSharedPreferences(ACTIVITY_PREF,Context.MODE_PRIVATE);
-        currentCurrency = sp.getString(CURRENT_CURRENCY,"");
-        nextCurrency = sp.getString(NEXT_CURRENCY,"");
+        currentCurrency = sp.getString(CURRENT_CURRENCY,"USD");
+        nextCurrency = sp.getString(NEXT_CURRENCY,"USD");
+        widgetCurrentCurrency = sp.getString(WIDGET_CURRENT_CURRENCY,"USD");
+        widgetNextCurrency = sp.getString(WIDGET_NEXT_CURRENCY,"USD");
     }
 
-    public static void saveWidgetChanges(){
-        SharedPreferences.Editor editor = widgetSp.edit();
-        editor.putString(WIDGET_CURRENT_CURRENCY, currentCurrency);
-        editor.putString(WIDGET_NEXT_CURRENCY, nextCurrency);
+    public static void deleteWidgetFromDb(String key){
+        SharedPreferences.Editor editor = sp.edit();
+        editor.remove(key);
         editor.commit();
     }
 
-    public static void loadWidgetPrefs(Context context){
-        sp = context.getSharedPreferences(WIDGET_PREF,Context.MODE_PRIVATE);
-        widgetCurrentCurrency = sp.getString(WIDGET_CURRENT_CURRENCY,"");
-        widgetNextCurrency = sp.getString(WIDGET_NEXT_CURRENCY,"");
-        // System.out.println(currentCurrency + " trololo " + nextCurrency);
+    public static void saveWidgetToDb(int id){
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putInt(WIDGET_ID+id, id);
+        editor.commit();
     }
 
-    public static String getCurrentCurrency(){
-        return currentCurrency;
-    }
+/*    public static void loadPrefs(Context context){
+        dbHelper = new DBHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-    public static String getNextCurrency(){
-        return nextCurrency;
-    }
+        Cursor c = db.query("moneyCurrencyDb", null, null, null, null, null, null);
+    }*/
 }

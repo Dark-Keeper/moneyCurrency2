@@ -1,7 +1,7 @@
 <appwidget-provider
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:initialLayout="@layout/widget"
-    android:configure="com.darkkeeper.moneycurrency.widget.ConfigWidgetActivity"
+    android:configure="com.darkkeeper.moneycurrency.MainActivity"
     android:minHeight="40dp"
     android:minWidth="110dp"
     android:updatePeriodMillis="2400000"
