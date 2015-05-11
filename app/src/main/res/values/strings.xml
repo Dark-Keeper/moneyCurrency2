@@ -5,14 +5,14 @@
     <string name="action_share_rates">Share Rates</string>
     <string name="current_rate_widget_name">Money Currency Info</string>
 
+
     <string name="usd_name">United States Dollar (USD)</string>
     <string name="rub_name">Russian Rouble (RUB)</string>
     <string name="euro_name">Euro (EUR)</string>
+    <string name="byr_name">Belarusian Rouble (BYR)</string>
     <string name="ok">Ok</string>
 
-    <string name="title_activity_currency_list">CurrencyListActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
 
-    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_currency_list">Currency</string>
+
 </resources>

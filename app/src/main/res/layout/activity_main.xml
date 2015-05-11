@@ -13,51 +13,47 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <TextView
+            <Button
                 android:layout_width="fill_parent"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:id="@+id/currencyFromName"
                 android:text="EUR"
                 android:textSize="30dp"
-                android:layout_weight="1"/>
+                android:layout_weight="80"/>
             <ImageView
                 android:layout_width="fill_parent"
-                android:layout_height="40dp"
+                android:layout_height="match_parent"
                 android:id="@+id/currencyFromImage"
-                android:layout_weight="1"/>
+                android:layout_weight="100"/>
             <ImageView
                 android:layout_width="fill_parent"
-                android:layout_height="40dp"
+                android:layout_height="match_parent"
                 android:background="@drawable/abc_ic_ab_back_mtrl_am_alpha"
-                android:layout_weight="1"/>
+                android:layout_weight="100"/>
             <ImageView
                 android:layout_width="fill_parent"
-                android:layout_height="40dp"
+                android:layout_height="match_parent"
                 android:id="@+id/currencyToImage"
-                android:layout_weight="1"/>
-            <TextView
+                android:layout_weight="100"/>
+            <Button
                 android:layout_width="fill_parent"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:id="@+id/currencyToName"
                 android:text="USD"
                 android:textSize="30dp"
-                android:layout_weight="1"/>
+                android:layout_weight="80"/>
             </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_gravity="center">
             <TextView
-                android:layout_width="100dp"
-                android:layout_height="40dp"
-                android:id="@+id/currencyFromValue"
-                android:layout_marginRight="20dp"/>
-            <TextView
-                android:layout_width="100dp"
-                android:layout_height="40dp"
-                android:id="@+id/currencyToValue"
-                android:layout_marginLeft="20dp"/>
+                android:layout_width="wrap_content"
+                android:layout_height="34dp"
+                android:id="@+id/currencyResult"
+                android:text=""
+                android:textSize="30dp"/>
 
             </LinearLayout>
         <LinearLayout
@@ -69,6 +65,7 @@
                 android:layout_width="100dp"
                 android:layout_height="40dp"
                 android:id="@+id/convert"
+                android:onClick="onClick"
                 android:text="Show"/>
             <Button
                 android:layout_width="100dp"
@@ -77,6 +74,7 @@
                 android:text="Favorites"/>
             </LinearLayout>
         <WebView
+            android:id="@+id/webView"
             android:layout_width="match_parent"
             android:layout_height="300dp">
 

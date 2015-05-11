@@ -2,4 +2,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.darkkeeper.moneycurrency.CurrencyListActivity">
+    <item android:id="@+id/search"
+        android:title="Search"
+        android:icon="@drawable/abc_ic_search_api_mtrl_alpha"
+        android:showAsAction="collapseActionView|ifRoom"
+        android:actionViewClass="android.widget.SearchView" />
 </menu>

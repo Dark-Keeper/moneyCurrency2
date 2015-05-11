@@ -2,8 +2,13 @@ package com.darkkeeper.moneycurrency;
 
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -12,12 +17,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.darkkeeper.moneycurrency.database.DBHelper;
-import com.darkkeeper.moneycurrency.preferences.Prefs;
+import com.darkkeeper.moneycurrency.database.Connection;
+import com.darkkeeper.moneycurrency.database.Prefs;
 import com.darkkeeper.moneycurrency.widget.WidgetProvider;
 
 import org.jsoup.Jsoup;
@@ -28,41 +33,84 @@ import java.io.IOException;
 
 
 public class MainActivity extends ActionBarActivity{
-    private static final String LOGS = "myLogs";
+    private static final int PICK_CURRENT_CURRENCY = 1;
+    private static final int PICK_NEXT_CURRENCY = 2;
+    private static final String LOG_TAG = "myLogs";
 
-    private final String[] items = new String[]{"USD","RUB","EUR","BYR"};
+    private Button currencyFromTV;
+    private Button currencyToTV;
+
+    private ImageView currencyFromIV;
+    private ImageView currencyToIV;
+
 
     int widgetID = AppWidgetManager.INVALID_APPWIDGET_ID;
     Intent resultValue;
     Bundle extras;
     Activity activity;
-    DBHelper dbHelper;
+    Connection connection;
 
+    private int version = 1;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
         Prefs.loadPrefs(this);
+        setContentView(R.layout.activity_main);
+        PackageInfo pInfo = null;
+
+        try {
+            pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            version = pInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        connection = new Connection(this, version);
+
 
         activity = this;
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("MoneyCurrency");
 
-        CurrencyListView currentCurrencyListView = (CurrencyListView)findViewById(R.id.listView1);
-        CurrencyListView nextCurrencyListView = (CurrencyListView)findViewById(R.id.listView2);
+        currencyFromTV = (Button) findViewById( R.id.currencyFromName );
+        currencyToTV = (Button) findViewById( R.id.currencyToName );
+
+        currencyFromTV.setText(Prefs.currentCurrency);
+        currencyToTV.setText(Prefs.nextCurrency);
+
+        currencyFromTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(new Intent(MainActivity.this,FavoritesCurrencyListActivity.class), PICK_CURRENT_CURRENCY);
+            }
+        });
+
+        currencyToTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(new Intent(MainActivity.this, FavoritesCurrencyListActivity.class), PICK_NEXT_CURRENCY);
+            }
+        });
+
+        currencyFromIV = (ImageView) findViewById( R.id.currencyFromImage );
+        currencyToIV = (ImageView) findViewById( R.id.currencyToImage );
+
+
+
+
 
         Intent intent = getIntent();
         extras = intent.getExtras();
-        Log.d(LOGS,"EXTRAS = " + extras);
+       // Log.d(LOGS,"EXTRAS = " + extras);
         if (extras != null) {
-            initListView(currentCurrencyListView, Prefs.widgetCurrentCurrency, 0);
-            initListView(nextCurrencyListView, Prefs.widgetNextCurrency, 1);
+            calculate(Prefs.currentCurrency,Prefs.nextCurrency);
+            calculate(Prefs.currentCurrency,Prefs.nextCurrency);
             widgetID = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID);
-            Log.d(LOGS,"widgetId = " + widgetID);
+        //    Log.d(LOGS,"widgetId = " + widgetID);
             if (widgetID == AppWidgetManager.INVALID_APPWIDGET_ID) {
                 finish();
             }
@@ -71,8 +119,29 @@ public class MainActivity extends ActionBarActivity{
 
             setResult(RESULT_CANCELED, resultValue);
         } else {
-            initListView(currentCurrencyListView, Prefs.currentCurrency, 2);
-            initListView(nextCurrencyListView, Prefs.nextCurrency, 3);
+           // initListView(currentCurrencyListView, Prefs.currentCurrency, 2);
+          //  initListView(nextCurrencyListView, Prefs.nextCurrency, 3);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PICK_CURRENT_CURRENCY) {
+            if (resultCode == RESULT_OK) {
+                Prefs.currentCurrency = data.getStringExtra("currency");
+                Prefs.saveChanges();
+                currencyFromTV.setText(data.getStringExtra("currency"));
+                calculate(Prefs.currentCurrency,Prefs.nextCurrency);
+
+            }
+        }
+        else if (requestCode == PICK_NEXT_CURRENCY){
+            if (resultCode == RESULT_OK) {
+                Prefs.nextCurrency = data.getStringExtra("currency");
+                Prefs.saveChanges();
+                currencyToTV.setText(data.getStringExtra("currency"));
+                calculate(Prefs.currentCurrency,Prefs.nextCurrency);
+            }
         }
     }
 
@@ -89,50 +158,6 @@ public class MainActivity extends ActionBarActivity{
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    public void initListView(CurrencyListView spinner, String currency, Integer id){
-        spinner.listView = currency;
-        spinner.id = id;
-        setNewAdapter(spinner);
-        setListener(spinner);
-    }
-
-    public void setNewAdapter(CurrencyListView listView){
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items);
-        listView.setAdapter(adapter);
-        if (!listView.listView.equals("")){
-            int currencyListViewPosition = adapter.getPosition(listView.listView);
-            listView.setSelection(currencyListViewPosition);
-        }
-    }
-
-    public void setListener(final CurrencyListView listView){
-        Log.d(LOGS,"id = " + listView.id);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                switch (listView.id) {
-                    case 0:
-                        Log.d(LOGS, "wcC");
-                        Prefs.widgetCurrentCurrency = items[position];
-                        break;
-                    case 1:
-                        Log.d(LOGS, "wnC");
-                        Prefs.widgetNextCurrency = items[position];
-                        break;
-                    case 2:
-                        Log.d(LOGS, "cC");
-                        Prefs.currentCurrency = items[position];
-                        break;
-                    case 3:
-                        Log.d(LOGS, "nC");
-                        Prefs.nextCurrency = items[position];
-                        break;
-                }
-                Prefs.saveChanges();
-            }
-        });
     }
 
     public void calculate(String currentCurrency, String nextCurrency){
@@ -155,7 +180,7 @@ public class MainActivity extends ActionBarActivity{
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    TextView textView = (TextView) findViewById(R.id.currentRateTextView);
+                    TextView textView = (TextView) findViewById(R.id.currencyResult);
                     textView.setText("1 " + currencies[0] + " = " + currentRateString);
                 }
             });
@@ -164,9 +189,9 @@ public class MainActivity extends ActionBarActivity{
     }
 
     public void onClick(View v){
-        Log.d(LOGS,"onClick EXTRAS = " + extras);
+        Log.d(LOG_TAG,"onClick EXTRAS = " + extras);
         if (extras != null) {
-            Log.d(LOGS, "WIDGETS = " + Prefs.widgetCurrentCurrency + Prefs.widgetNextCurrency);
+            Log.d(LOG_TAG, "WIDGETS = " + Prefs.widgetCurrentCurrency + Prefs.widgetNextCurrency);
             //calculate(Prefs.widgetCurrentCurrency, Prefs.widgetNextCurrency);
 
            // Prefs.saveWidgetToDb(widgetID,);
@@ -175,7 +200,7 @@ public class MainActivity extends ActionBarActivity{
 
             activity.finish();
         } else {
-            Log.d(LOGS, "ACTIVITY = " + Prefs.currentCurrency + Prefs.nextCurrency);
+            Log.d(LOG_TAG, "ACTIVITY = " + Prefs.currentCurrency + Prefs.nextCurrency);
             calculate(Prefs.currentCurrency, Prefs.nextCurrency);
         }
     }

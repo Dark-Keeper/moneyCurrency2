@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 import com.darkkeeper.moneycurrency.MainActivity;
 import com.darkkeeper.moneycurrency.R;
-import com.darkkeeper.moneycurrency.preferences.Prefs;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -45,7 +44,7 @@ public class WidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,
                          int[] appWidgetIds) {
-        super.onUpdate(context, appWidgetManager, appWidgetIds);
+/*        super.onUpdate(context, appWidgetManager, appWidgetIds);
         Log.d(LOG_TAG, "onUpdate " + Arrays.toString(appWidgetIds));
         Prefs.loadPrefs(context);
         this.context = context;
@@ -54,18 +53,18 @@ public class WidgetProvider extends AppWidgetProvider {
         for (int id : appWidgetIds) {
             widgetID = id;
             updateWidget();
-        }
+        }*/
     }
 
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
         super.onDeleted(context, appWidgetIds);
-        Log.d(LOG_TAG, "onDeleted " + Arrays.toString(appWidgetIds));
+/*        Log.d(LOG_TAG, "onDeleted " + Arrays.toString(appWidgetIds));
         for (int widgetID : appWidgetIds) {
             Prefs.deleteWidgetFromDb(Prefs.WIDGET_ID+widgetID);
           //  editor.remove(ConfigActivity.WIDGET_TEXT + widgetID);
           //  editor.remove(ConfigActivity.WIDGET_COLOR + widgetID);
-        }
+        }*/
 
     }
 
@@ -76,8 +75,8 @@ public class WidgetProvider extends AppWidgetProvider {
     }
 
     public static void updateWidget() {
-        Log.d(LOG_TAG, "updateWidget " + widgetID);
-        calculate(Prefs.widgetCurrentCurrency, Prefs.widgetNextCurrency);
+/*        Log.d(LOG_TAG, "updateWidget " + widgetID);
+        calculate(Prefs.widgetCurrentCurrency, Prefs.widgetNextCurrency);*/
     }
 
     public static void calculate(String currentCurrency, String nextCurrency){
